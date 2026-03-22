@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PENTAX - SELECTOR POMPE CENTRIFUGE CM / CMS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #ffffff;
+  --surface: #f6f8fa;
+  --surface2: #eef1f5;
+  --border: #d0d7de;
+  --text: #1f2328;
+  --text-dim: #656d76;
+  --accent: #0969da;
+  --accent2: #1a7f37;
+  --accent3: #cf5400;
+  --accent4: #8250df;
+  --danger: #cf222e;
+  --cm-color: #0969da;
+  --cms-color: #1a7f37;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, #f0f4f8 0%, #e8edf3 50%, #f0f4f8 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -1px;
+}
+
+.header-sub {
+  font-size: 17px;
+  color: #000000;
+  border-left: 1px solid var(--border);
+  padding-left: 20px;
+  font-weight: 500;
+}
+
+.main {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: calc(100vh - 75px);
+}
+
+.sidebar {
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(100vh - 75px);
+}
+
+.sidebar h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--text-dim);
+  margin-bottom: 14px;
+  font-weight: 600;
+}
+
+.input-group { margin-bottom: 20px; }
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.input-row input {
+  flex: 1;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'JetBrains Mono', monospace;
+  outline: none;
+  transition: border-color .2s;
+}
+
+.input-row input:focus { border-color: var(--accent); }
+
+.input-row .unit {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  min-width: 40px;
+}
+
+.series-toggle {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 4px;
+}
+
+.series-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-dim);
+  transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.series-btn.active-cm {
+  background: rgba(9,105,218,0.12);
+  color: var(--cm-color);
+}
+
+.series-btn.active-cms {
+  background: rgba(26,127,55,0.12);
+  color: var(--cms-color);
+}
+
+.series-btn.active-all {
+  background: rgba(130,80,223,0.12);
+  color: var(--accent4);
+}
+
+.pump-list {
+  max-height: calc(100vh - 420px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.pump-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background .15s;
+  font-size: 13px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.pump-item:hover { background: var(--surface2); }
+
+.pump-item.selected { background: rgba(9,105,218,0.08); }
+
+.pump-item.active-in-chart { background: rgba(9,105,218,0.10); }
+
+.pump-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pump-dot.cm { background: var(--cm-color); }
+.pump-dot.cms { background: var(--cms-color); }
+
+.pump-name { flex: 1; }
+
+.pump-h0 {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.match-badge {
+  background: rgba(26,127,55,0.1);
+  color: var(--accent2);
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.content {
+  padding: 24px;
+  overflow-y: auto;
+  max-height: calc(100vh - 75px);
+}
+
+.canvas-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.canvas-wrap h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text);
+}
+
+canvas {
+  width: 100%;
+  height: 500px;
+  display: block;
+  border-radius: 8px;
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.info-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+}
+
+.info-card .card-remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 22px;
+  text-align: center;
+  cursor: pointer;
+  transition: all .2s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.info-card .card-remove:hover {
+  background: rgba(207,34,46,0.08);
+  border-color: rgba(207,34,46,0.3);
+  color: var(--danger);
+}
+
+.info-card .card-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.info-card .card-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.info-card .card-sub {
+  font-size: 12px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.info-card .card-params {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px 16px;
+  width: fit-content;
+}
+
+.tooltip-box {
+  position: absolute;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+  display: none;
+  z-index: 10;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.btn-clear {
+  background: rgba(207,34,46,0.06);
+  color: var(--danger);
+  border: 1px solid rgba(207,34,46,0.2);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 12px;
+  font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+
+.btn-clear:hover { background: rgba(207,34,46,0.12); }
+
+.search-input {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  margin-bottom: 12px;
+  transition: border-color .2s;
+}
+
+.search-input:focus { border-color: var(--accent); }
+
+.count-badge {
+  font-size: 11px;
+  color: var(--text-dim);
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.op-point {
+  display: inline-block;
+  background: rgba(207,84,0,0.1);
+  color: var(--accent3);
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+.header-author {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.85;
+  transition: opacity 0.3s ease;
+}
+.header-author:hover { opacity: 1; }
+.header-author .author-sep {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+  margin: 0 4px;
+}
+.header-author .author-label {
+  font-weight: 700;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #000000;
+}
+.header-author .author-name {
+  font-weight: 700;
+  font-size: 9px;
+  font-style: italic;
+  color: #000000;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">PENTAX</div>
+  <div class="header-sub">SELECTOR POMPE CENTRIFUGE — Serii CM &amp; CMS &bull; Curbe H = f(Q)</div>
+  <div class="header-author">
+    <div class="author-sep"></div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;">
+      <span class="author-label">Configurator by</span>
+      <span class="author-name">Bogdan Nistor</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sidebar">
+    <h3>Punct de funcționare</h3>
+    <div class="input-group">
+      <label>Debit dorit (Q)</label>
+      <div class="input-row">
+        <input type="number" id="inputQ" placeholder="ex: 30" step="0.1" min="0">
+        <span class="unit">m³/h</span>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>Înălțime dorita (H)</label>
+      <div class="input-row">
+        <input type="number" id="inputH" placeholder="ex: 25" step="0.1" min="0">
+        <span class="unit">m</span>
+      </div>
+    </div>
+
+    <h3 style="margin-top:24px">Serie</h3>
+    <div class="series-toggle">
+      <button class="series-btn active-all" id="btnAll" onclick="setSeries('all')">Toate</button>
+      <button class="series-btn" id="btnCM" onclick="setSeries('cm')">CM</button>
+      <button class="series-btn" id="btnCMS" onclick="setSeries('cms')">CMS</button>
+    </div>
+
+    <h3>Căutare pompă</h3>
+    <input type="text" class="search-input" id="searchInput" placeholder="Filtru nume...">
+
+    <div class="count-badge" id="countBadge">—</div>
+
+    <div class="pump-list" id="pumpList"></div>
+
+    <button class="btn-clear" onclick="clearSelection()">Resetare selecție</button>
+  </div>
+
+  <div class="content">
+    <div class="canvas-wrap">
+      <h3>Curbe caracteristice H = f(Q)
+        <span class="op-point" id="opLabel" style="display:none"></span>
+      </h3>
+      <canvas id="chart"></canvas>
+      <div class="tooltip-box" id="tooltip"></div>
+    </div>
+
+    <div class="info-cards" id="infoCards"></div>
+  </div>
+</div>
+
+<script>
+// ============ PUMP DATA ============
+const CM_PUMPS = [
+  {name:"CM 32-160C", coeffs:[-2.06021e-06,0.000146702,-0.00402346,0.0524256,-0.345389,0.849525,22.9998], qmax:21},
+  {name:"CM 32-160B", coeffs:[7.24744e-09,8.72529e-06,-0.000550165,0.0113964,-0.112115,0.321034,27.9999], qmax:24},
+  {name:"CM 32-160A", coeffs:[3.37783e-07,-2.61931e-05,0.000748576,-0.00984029,0.0358041,0.0274492,36.0998], qmax:27},
+  {name:"CM 32-200C", coeffs:[3.07505e-07,-2.5455e-05,0.000789956,-0.0114056,0.0556961,-0.048345,40.2003], qmax:27},
+  {name:"CM 32-200B1", coeffs:[5.3134e-07,-4.7756e-05,0.00162759,-0.0260762,0.178476,-0.475081,48.2999], qmax:27},
+  {name:"CM 32-200B", coeffs:[4.29195e-07,-3.92347e-05,0.001357,-0.0220202,0.150033,-0.401006,48.2996], qmax:30},
+  {name:"CM 32-200A1", coeffs:[-9.08002e-08,7.02348e-06,-0.000153994,-6.51065e-05,0.01084,0.0322814,57.899], qmax:30},
+  {name:"CM 32-200A", coeffs:[3.02761e-08,-4.0582e-06,0.000230856,-0.00634447,0.0584472,-0.100416,57.9002], qmax:33},
+  {name:"CM 32-250C", coeffs:[6.92269e-07,-5.60195e-05,0.00178091,-0.0279816,0.201312,-0.8138,74.5996], qmax:24},
+  {name:"CM 32-250B", coeffs:[1.20944e-06,-8.11145e-05,0.00215662,-0.0298892,0.201523,-0.635163,84.7999], qmax:24},
+  {name:"CM 32-250A1", coeffs:[4.78471e-07,-2.95888e-05,0.000756109,-0.0117808,0.0937133,-0.2506,93.5001], qmax:24},
+  {name:"CM 32-250A", coeffs:[4.78471e-07,-2.95888e-05,0.000756109,-0.0117808,0.0937133,-0.2506,93.5001], qmax:24},
+  {name:"CM 40-125C", coeffs:[4.18158e-08,-4.90192e-06,0.000227293,-0.0052184,0.047221,-0.0727646,17.9002], qmax:36},
+  {name:"CM 40-125B", coeffs:[1.16567e-08,-1.45076e-06,7.18979e-05,-0.00182352,0.0127334,0.0752043,22.601], qmax:39},
+  {name:"CM 40-125A", coeffs:[3.20782e-08,-4.35546e-06,0.000231142,-0.00598035,0.0641602,-0.147958,26.8006], qmax:42},
+  {name:"CM 40-160B", coeffs:[1.5874e-08,-2.14853e-06,0.000114449,-0.00293357,0.0228956,0.0731024,28.1998], qmax:36},
+  {name:"CM 40-160A", coeffs:[5.00995e-10,1.13924e-07,-1.54417e-05,0.000661134,-0.0233557,0.291368,33.7991], qmax:42},
+  {name:"CM 40-160AP", coeffs:[4.76488e-09,-7.43103e-07,4.57027e-05,-0.00134556,0.00728032,0.150315,38.5984], qmax:48},
+  {name:"CM 40-200B1", coeffs:[2.35274e-08,-2.99565e-06,0.000147161,-0.00353715,0.028502,0.0285502,44.7004], qmax:39},
+  {name:"CM 40-200B", coeffs:[1.04096e-08,-1.38126e-06,7.07052e-05,-0.0017954,0.00917416,0.119197,44.6001], qmax:42},
+  {name:"CM 40-200A1", coeffs:[8.44929e-09,-1.31513e-06,8.13283e-05,-0.00262381,0.0316778,-0.0914667,56.2003], qmax:39},
+  {name:"CM 40-200A", coeffs:[1.67418e-08,-2.32068e-06,0.000127884,-0.0036447,0.0421876,-0.131722,56.2005], qmax:42},
+  {name:"CM 40-200AP", coeffs:[2.42414e-08,-3.82011e-06,0.000227789,-0.00645991,0.0760678,-0.341266,61.7021], qmax:45},
+  {name:"CM 40-250C", coeffs:[2.93644e-08,-4.22203e-06,0.000216363,-0.00520023,0.0539021,-0.241133,64.8004], qmax:36},
+  {name:"CM 40-250B", coeffs:[2.33433e-07,-3.03663e-05,0.00149326,-0.0341937,0.347169,-1.21658,73.6952], qmax:39},
+  {name:"CM 40-250A1", coeffs:[-2.52581e-08,2.5916e-06,-8.9517e-05,0.00118525,-0.0191463,0.34964,82.5991], qmax:42},
+  {name:"CM 40-250A", coeffs:[-2.4616e-08,2.50875e-06,-8.54451e-05,0.00109079,-0.0181223,0.345536,82.5991], qmax:45},
+  {name:"CM 40-250BM", coeffs:[-7.70432e-09,1.20292e-06,-7.15274e-05,0.00184709,-0.0258141,0.19851,92.5978], qmax:54},
+  {name:"CM 40-250AM", coeffs:[-8.25201e-09,1.54588e-06,-0.000111566,0.00373731,-0.0643319,0.481849,101.712], qmax:60},
+  {name:"CM 50-125B", coeffs:[2.31904e-11,-6.61297e-09,6.55629e-07,-2.32026e-05,-0.00319385,0.0882183,20.0034], qmax:72},
+  {name:"CM 50-125A", coeffs:[4.96602e-10,-1.26263e-07,1.14971e-05,-0.00045424,0.0044672,0.0420964,23.7021], qmax:72},
+  {name:"CM 50-160B1", coeffs:[3.16099e-08,-4.89526e-06,0.000282184,-0.00749767,0.0827266,-0.193386,32.1011], qmax:48},
+  {name:"CM 50-160B", coeffs:[3.88343e-08,-5.99354e-06,0.000346193,-0.00927404,0.106035,-0.308241,32.1017], qmax:54},
+  {name:"CM 50-160A1", coeffs:[3.73656e-08,-5.7904e-06,0.000336808,-0.00915082,0.108289,-0.318327,38.1028], qmax:54},
+  {name:"CM 50-160A", coeffs:[-6.3676e-09,1.5174e-06,-0.000128951,0.00489837,-0.0905695,0.729011,38.0914], qmax:60},
+  {name:"CM 50-200C", coeffs:[1.07531e-07,-1.57574e-05,0.000863394,-0.0218868,0.241984,-0.827375,48.2024], qmax:48},
+  {name:"CM 50-200B", coeffs:[4.62271e-08,-6.64961e-06,0.000347306,-0.00805594,0.0690985,-0.0227811,53.1015], qmax:48},
+  {name:"CM 50-200A1", coeffs:[3.40927e-08,-4.87369e-06,0.000250134,-0.00554954,0.0378869,0.164572,59.8987], qmax:54},
+  {name:"CM 50-200A", coeffs:[3.40927e-08,-4.87369e-06,0.000250134,-0.00554954,0.0378869,0.164572,59.8987], qmax:54},
+  {name:"CM 50-250C1", coeffs:[9.873e-08,-1.43583e-05,0.000769302,-0.0191643,0.217471,-0.991678,69.2004], qmax:39},
+  {name:"CM 50-250C", coeffs:[1.95381e-07,-2.67162e-05,0.00137989,-0.0336789,0.382786,-1.7106,69.2009], qmax:42},
+  {name:"CM 50-250B", coeffs:[1.05989e-07,-1.50669e-05,0.000808257,-0.0205987,0.242983,-1.09921,78.801], qmax:45},
+  {name:"CM 50-250A", coeffs:[3.15976e-08,-4.55453e-06,0.000238072,-0.00583746,0.0625684,-0.250041,88.4994], qmax:48},
+  {name:"CM 65-125B1", coeffs:[-2.06798e-10,7.57488e-08,-1.06213e-05,0.000709053,-0.0233767,0.323544,19.7], qmax:108},
+  {name:"CM 65-125B", coeffs:[-1.43325e-10,5.38997e-08,-7.7285e-06,0.000525684,-0.0178341,0.259801,19.7003], qmax:120},
+  {name:"CM 65-125A1", coeffs:[-3.89892e-11,1.54228e-08,-2.38487e-06,0.000178044,-0.00702624,0.124129,24.6], qmax:120},
+  {name:"CM 65-125A", coeffs:[1.48892e-12,-9.24834e-11,-1.00259e-07,1.74102e-05,-0.00167057,0.0570192,24.6007], qmax:132},
+  {name:"CM 65-160C", coeffs:[-1.69566e-09,5.98189e-07,-8.04264e-05,0.00513572,-0.158607,1.93383,28.8954], qmax:108},
+  {name:"CM 65-160B", coeffs:[-1.65799e-09,5.90777e-07,-8.00922e-05,0.00514692,-0.159492,1.9532,33.195], qmax:108},
+  {name:"CM 65-160A1", coeffs:[1.19888e-09,-3.28458e-07,3.43003e-05,-0.00170796,0.037865,-0.20654,40.0996], qmax:96},
+  {name:"CM 65-160A", coeffs:[-1.11208e-09,3.95155e-07,-5.32784e-05,0.00339842,-0.105186,1.3311,40.0968], qmax:108},
+  {name:"CM 65-200C1", coeffs:[-2.79174e-08,6.75262e-06,-0.000641949,0.0299149,-0.689687,6.36553,44.4], qmax:66},
+  {name:"CM 65-200C", coeffs:[8.95652e-09,-2.01814e-06,0.000177572,-0.00766085,0.155348,-1.08917,44.4002], qmax:72},
+  {name:"CM 65-200B", coeffs:[-4.20232e-09,1.13009e-06,-0.00011615,0.00572149,-0.14278,1.53,51.7], qmax:78},
+  {name:"CM 65-200A", coeffs:[-6.22526e-09,1.64071e-06,-0.000164695,0.00784985,-0.183684,1.76389,60.3], qmax:78},
+  {name:"CM 65-250B", coeffs:[-4.33974e-09,1.14453e-06,-0.000112623,0.00516368,-0.120859,1.19502,80.6001], qmax:78},
+  {name:"CM 65-250A", coeffs:[-3.12028e-09,7.4594e-07,-6.1832e-05,0.00202996,-0.0273209,0.129046,91.6006], qmax:84},
+  {name:"CM 80-160E", coeffs:[-1.56083e-11,9.47866e-09,-2.29462e-06,0.000278958,-0.017716,0.47498,21.5], qmax:168},
+  {name:"CM 80-160D", coeffs:[-1.64776e-12,9.59582e-10,-2.51936e-07,3.88782e-05,-0.00396565,0.177463,25.4], qmax:180},
+  {name:"CM 80-160C1", coeffs:[8.15473e-12,-5.49493e-09,1.41828e-06,-0.000172887,0.0091599,-0.13705,29.0003], qmax:195},
+  {name:"CM 80-160C", coeffs:[8.15473e-12,-5.49493e-09,1.41828e-06,-0.000172887,0.0091599,-0.13705,29.0003], qmax:195},
+  {name:"CM 80-160B", coeffs:[5.08474e-12,-3.39469e-09,8.47914e-07,-9.65454e-05,0.00420748,-0.0083381,33.6001], qmax:210},
+  {name:"CM 80-160A", coeffs:[-5.92033e-12,4.21316e-09,-1.16923e-06,0.000158044,-0.0109634,0.337675,37.9991], qmax:225},
+  {name:"CM 80-200B", coeffs:[-1.54503e-11,1.36567e-08,-4.41929e-06,0.000666846,-0.0483022,1.37931,50.3992], qmax:180},
+  {name:"CM 80-200A", coeffs:[-2.38041e-11,1.86796e-08,-5.64614e-06,0.000820078,-0.0580087,1.62793,57.2982], qmax:195},
+  {name:"CM 100-160B", coeffs:[4.47233e-13,-4.98099e-10,2.15947e-07,-4.57685e-05,0.00458392,-0.180641,41.6995], qmax:330},
+  {name:"CM 100-160A", coeffs:[3.74446e-13,-4.21499e-10,1.85202e-07,-3.99381e-05,0.0040875,-0.164727,46], qmax:330}
+];
+
+const CMS_PUMPS = [
+  {name:"CMS 32BE/1,5", coeffs:[-9.12195e-08,7.07539e-06,-0.000171239,0.000956752,-0.00180166,-0.0446313,23.8998], qmax:30},
+  {name:"CMS 32BE/2,2", coeffs:[-3.15927e-07,3.02215e-05,-0.00108054,0.0176861,-0.14343,0.320741,29.5001], qmax:30},
+  {name:"CMS 32CE/3", coeffs:[7.76997e-09,-1.13566e-06,6.94844e-05,-0.00221727,0.0298045,-0.463661,36.9003], qmax:30},
+  {name:"CMS 32CE/4", coeffs:[-6.605e-07,5.72594e-05,-0.00191249,0.0302398,-0.215972,0.0328793,49.7004], qmax:27},
+  {name:"CMS 32CE/5,5", coeffs:[-4.37091e-07,3.44709e-05,-0.000953862,0.00969847,0.0118088,-1.23947,63.9002], qmax:27},
+  {name:"CMS 40BE/1,5", coeffs:[3.91616e-08,-4.84356e-06,0.000231001,-0.00527171,0.0499565,-0.185669,16.4003], qmax:33},
+  {name:"CMS 40BE/2,2", coeffs:[5.7206e-09,-9.38292e-07,6.36999e-05,-0.00207315,0.0227747,-0.0667102,21.5001], qmax:39},
+  {name:"CMS 40BE/3", coeffs:[-7.82139e-09,7.90516e-07,-2.20397e-05,-1.00164e-05,-0.000992466,-0.00266157,27.1005], qmax:42},
+  {name:"CMS 40BE/4", coeffs:[3.17877e-08,-4.60278e-06,0.000263485,-0.00738624,0.0900464,-0.571804,36.5984], qmax:42},
+  {name:"CMS 40CE/5,5", coeffs:[-4.516e-08,6.11803e-06,-0.000308709,0.00704876,-0.076575,0.120393,44.3924], qmax:48},
+  {name:"CMS 40CE/7,5", coeffs:[2.58207e-08,-3.84169e-06,0.000207577,-0.00497091,0.044131,-0.311629,54.0119], qmax:54},
+  {name:"CMS 40CE/11", coeffs:[7.769e-09,-1.22736e-06,7.27168e-05,-0.00216682,0.0333767,-0.454557,68.4973], qmax:60},
+  {name:"CMS 50AE/3", coeffs:[-6.44958e-09,1.39554e-06,-0.000115852,0.00459456,-0.091052,0.682346,22.2998], qmax:60},
+  {name:"CMS 50AE/4", coeffs:[-4.50452e-09,9.87954e-07,-8.21502e-05,0.00319743,-0.0603691,0.423635,26.0003], qmax:66},
+  {name:"CMS 50BE/5,5", coeffs:[-2.7096e-09,6.40616e-07,-5.78987e-05,0.00247725,-0.0524133,0.399675,34.9007], qmax:72},
+  {name:"CMS 50CE/7,5", coeffs:[-3.1715e-09,8.6868e-07,-9.1268e-05,0.00454237,-0.107354,0.899113,39.7981], qmax:78},
+  {name:"CMS 50CE/11", coeffs:[2.52567e-10,-5.67727e-08,3.8699e-06,-3.04878e-05,-0.00711087,0.097587,55.8011], qmax:78},
+  {name:"CMS 50CE1/15", coeffs:[-7.1799e-11,-5.8069e-08,1.37865e-05,-0.00107027,0.0336626,-0.495639,65.9019], qmax:72},
+  {name:"CMS 50CE/15", coeffs:[-7.1799e-11,-5.8069e-08,1.37865e-05,-0.00107027,0.0336626,-0.495639,65.9019], qmax:72},
+  {name:"CMS 50CE/18,5", coeffs:[-2.72835e-09,6.22481e-07,-5.40119e-05,0.00221437,-0.0436942,0.286256,69.6035], qmax:72},
+  {name:"CMS 65AE/5,5", coeffs:[-2.1301e-11,5.80398e-09,-3.88723e-07,-1.76683e-05,0.00198115,-0.0568184,20.3007], qmax:126},
+  {name:"CMS 65AE/7,5", coeffs:[-1.10601e-10,4.76478e-08,-7.81115e-06,0.00059808,-0.021413,0.260918,25.1005], qmax:132},
+  {name:"CMS 65BE/11", coeffs:[-1.63744e-11,1.42169e-08,-3.59892e-06,0.000385612,-0.0187345,0.301659,34.7987], qmax:126},
+  {name:"CMS 65BE1/15", coeffs:[1.41976e-10,-5.45785e-08,7.8218e-06,-0.000507754,0.013914,-0.139248,41.8991], qmax:126},
+  {name:"CMS 65BE/15", coeffs:[1.41976e-10,-5.45785e-08,7.8218e-06,-0.000507754,0.013914,-0.139248,41.8991], qmax:126},
+  {name:"CMS 65CE/18,5", coeffs:[-8.77319e-11,3.97928e-08,-7.14374e-06,0.000626391,-0.0266243,0.399509,49.6998], qmax:126},
+  {name:"CMS 65CE/22", coeffs:[1.14481e-11,-2.64044e-09,-1.71956e-07,8.35652e-05,-0.00669607,0.101382,58.0985], qmax:138},
+  {name:"CMS 80BE/11", coeffs:[7.12426e-12,-5.03473e-09,1.33873e-06,-0.000163329,0.00829657,-0.134132,27.3002], qmax:204},
+  {name:"CMS 80BE1/15", coeffs:[4.39409e-12,-3.0499e-09,8.05627e-07,-9.81475e-05,0.0047353,-0.0620336,32.2008], qmax:204},
+  {name:"CMS 80BE/15", coeffs:[4.39409e-12,-3.0499e-09,8.05627e-07,-9.81475e-05,0.0047353,-0.0620336,32.2008], qmax:204},
+  {name:"CMS 80BE/18,5", coeffs:[-3.23206e-12,2.17923e-09,-5.66781e-07,7.20877e-05,-0.00502391,0.139594,38.4002], qmax:216},
+  {name:"CMS 80CE/22", coeffs:[8.24913e-13,-2.41085e-10,-3.95055e-08,1.99e-05,-0.00266858,0.103655,41.8992], qmax:192}
+];
+
+// Tag each pump
+CM_PUMPS.forEach(p => p.series = 'cm');
+CMS_PUMPS.forEach(p => p.series = 'cms');
+const ALL_PUMPS = [...CM_PUMPS, ...CMS_PUMPS];
+
+// ============ STATE ============
+let activeSeries = 'all';
+let selectedPumps = new Set();
+let dismissedPumps = new Set();
+let searchFilter = '';
+
+// ============ POLY EVAL ============
+function evalPoly(coeffs, Q) {
+  // coeffs: [a6, a5, a4, a3, a2, a1, a0] => a6*Q^6 + a5*Q^5 + ...
+  let val = 0;
+  for (let i = 0; i < coeffs.length; i++) {
+    val += coeffs[i] * Math.pow(Q, coeffs.length - 1 - i);
+  }
+  return val;
+}
+
+// Find Q range where H > 0 (fallback if qmax not set)
+function findQmax(coeffs, maxSearch=600) {
+  let qmax = 0;
+  for (let q = 0; q <= maxSearch; q += 0.5) {
+    if (evalPoly(coeffs, q) > 0) qmax = q;
+    else if (q > 5 && evalPoly(coeffs, q) <= 0) break;
+  }
+  return qmax;
+}
+
+// Get the authoritative qmax for a pump (from docx data, fallback to calculated)
+function getPumpQmax(pump) {
+  return pump.qmax || findQmax(pump.coeffs);
+}
+
+// ============ COLORS ============
+const CM_COLORS = [
+  '#0969da','#0550ae','#2188ff','#0a69c7','#1a7fd4',
+  '#0860c4','#1074cc','#0656b8','#1282e0','#0e6ecc'
+];
+const CMS_COLORS = [
+  '#1a7f37','#116329','#2da44e','#1b8038','#248c3e',
+  '#1a7830','#1f8b3d','#157030','#29a147','#1e8839'
+];
+
+function getPumpColor(pump, idx) {
+  if (pump.series === 'cm') return CM_COLORS[idx % CM_COLORS.length];
+  return CMS_COLORS[idx % CMS_COLORS.length];
+}
+
+// ============ FILTERING ============
+function getVisiblePumps() {
+  return ALL_PUMPS.filter(p => {
+    if (activeSeries !== 'all' && p.series !== activeSeries) return false;
+    if (searchFilter && !p.name.toLowerCase().includes(searchFilter.toLowerCase())) return false;
+    return true;
+  });
+}
+
+function setSeries(s) {
+  activeSeries = s;
+  document.getElementById('btnAll').className = 'series-btn' + (s==='all'?' active-all':'');
+  document.getElementById('btnCM').className = 'series-btn' + (s==='cm'?' active-cm':'');
+  document.getElementById('btnCMS').className = 'series-btn' + (s==='cms'?' active-cms':'');
+  renderPumpList();
+  drawChart();
+}
+
+function clearSelection() {
+  selectedPumps.clear();
+  dismissedPumps.clear();
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+}
+
+// ============ PUMP LIST ============
+function renderPumpList() {
+  const list = document.getElementById('pumpList');
+  const visible = getVisiblePumps();
+  const targetQ = parseFloat(document.getElementById('inputQ').value);
+  const targetH = parseFloat(document.getElementById('inputH').value);
+  const hasTarget = !isNaN(targetQ) && !isNaN(targetH) && targetQ > 0 && targetH > 0;
+
+  // Determine which pumps are currently shown in the chart/cards
+  let activePumpNames = new Set();
+  if (selectedPumps.size > 0) {
+    activePumpNames = new Set(selectedPumps);
+  } else if (hasTarget) {
+    getVisiblePumps().forEach(p => {
+      if (dismissedPumps.has(p.name)) return;
+      const h = evalPoly(p.coeffs, targetQ);
+      const qmax = getPumpQmax(p);
+      if (h >= targetH * 0.85 && h <= targetH * 1.25 && targetQ <= qmax) {
+        activePumpNames.add(p.name);
+      }
+    });
+  }
+
+  // Sort: selected first, then matches, then alphabetical
+  const sorted = [...visible].map(p => {
+    let match = false;
+    if (hasTarget) {
+      const h = evalPoly(p.coeffs, targetQ);
+      const qmax = getPumpQmax(p);
+      if (h >= targetH * 0.85 && h <= targetH * 1.25 && targetQ <= qmax) match = true;
+    }
+    const active = activePumpNames.has(p.name);
+    return { pump: p, match, selected: selectedPumps.has(p.name), active };
+  });
+
+  sorted.sort((a, b) => {
+    if (a.selected !== b.selected) return a.selected ? -1 : 1;
+    if (a.match !== b.match) return a.match ? -1 : 1;
+    return a.pump.name.localeCompare(b.pump.name, undefined, {numeric: true, sensitivity: 'base'});
+  });
+
+  document.getElementById('countBadge').textContent =
+    `${visible.length} pompe` + (hasTarget ? ` · ${sorted.filter(s=>s.match).length} potriviri` : '');
+
+  list.innerHTML = sorted.map(({ pump: p, match, selected, active }) => {
+    const h0 = evalPoly(p.coeffs, 0).toFixed(1);
+    const cls = selected ? 'selected' : (active ? 'active-in-chart' : '');
+    return `<div class="pump-item ${cls}" onclick="togglePump('${p.name}')">
+      <div class="pump-dot ${p.series}"></div>
+      <div class="pump-name">${p.name}</div>
+      ${match ? '<div class="match-badge">MATCH</div>' : ''}
+      <div class="pump-h0">H₀=${h0}m</div>
+    </div>`;
+  }).join('');
+}
+
+function togglePump(name) {
+  if (selectedPumps.has(name)) selectedPumps.delete(name);
+  else selectedPumps.add(name);
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+}
+
+// ============ CHART ============
+function drawChart() {
+  const canvas = document.getElementById('chart');
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+
+  const targetQ = parseFloat(document.getElementById('inputQ').value);
+  const targetH = parseFloat(document.getElementById('inputH').value);
+  const hasTarget = !isNaN(targetQ) && !isNaN(targetH) && targetQ > 0 && targetH > 0;
+
+  // Determine which pumps to draw
+  let pumpsToDraw = [];
+  if (selectedPumps.size > 0) {
+    pumpsToDraw = ALL_PUMPS.filter(p => selectedPumps.has(p.name));
+  } else if (hasTarget) {
+    // Show matching pumps
+    pumpsToDraw = getVisiblePumps().filter(p => {
+      if (dismissedPumps.has(p.name)) return false;
+      const h = evalPoly(p.coeffs, targetQ);
+      const qmax = getPumpQmax(p);
+      return h >= targetH * 0.85 && h <= targetH * 1.25 && targetQ <= qmax;
+    });
+  }
+
+  // Find axis ranges — X axis: 0 to max(qmax) + 10
+  let maxQ = 50, maxH = 50;
+  if (pumpsToDraw.length > 0) {
+    pumpsToDraw.forEach(p => {
+      const qm = getPumpQmax(p);
+      if (qm + 5 > maxQ) maxQ = qm + 5;
+      const h0 = evalPoly(p.coeffs, 0);
+      if (h0 * 1.1 > maxH) maxH = h0 * 1.1;
+    });
+  }
+  if (hasTarget) {
+    if (targetQ * 1.2 > maxQ) maxQ = targetQ * 1.2;
+    if (targetH * 1.2 > maxH) maxH = targetH * 1.2;
+  }
+
+  maxQ = Math.ceil(maxQ / 10) * 10;
+  maxH = Math.ceil(maxH / 10) * 10;
+
+  const pad = { top: 20, right: 30, bottom: 50, left: 60 };
+  const cw = W - pad.left - pad.right;
+  const ch = H - pad.top - pad.bottom;
+
+  const scaleX = q => pad.left + (q / maxQ) * cw;
+  const scaleY = h => pad.top + ch - (h / maxH) * ch;
+
+  // Background
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = '#e1e4e8';
+  ctx.lineWidth = 0.5;
+  for (let q = 0; q <= maxQ; q += maxQ > 200 ? 50 : (maxQ > 100 ? 20 : 10)) {
+    ctx.beginPath();
+    ctx.moveTo(scaleX(q), pad.top);
+    ctx.lineTo(scaleX(q), pad.top + ch);
+    ctx.stroke();
+  }
+  for (let h = 0; h <= maxH; h += maxH > 100 ? 20 : 10) {
+    ctx.beginPath();
+    ctx.moveTo(pad.left, scaleY(h));
+    ctx.lineTo(pad.left + cw, scaleY(h));
+    ctx.stroke();
+  }
+
+  // Axes
+  ctx.strokeStyle = '#8b949e';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(pad.left, pad.top);
+  ctx.lineTo(pad.left, pad.top + ch);
+  ctx.lineTo(pad.left + cw, pad.top + ch);
+  ctx.stroke();
+
+  // Axis labels
+  ctx.fillStyle = '#57606a';
+  ctx.font = '11px JetBrains Mono, monospace';
+  ctx.textAlign = 'center';
+  for (let q = 0; q <= maxQ; q += maxQ > 200 ? 50 : (maxQ > 100 ? 20 : 10)) {
+    ctx.fillText(q, scaleX(q), pad.top + ch + 18);
+  }
+  ctx.textAlign = 'right';
+  for (let h = 0; h <= maxH; h += maxH > 100 ? 20 : 10) {
+    ctx.fillText(h, pad.left - 8, scaleY(h) + 4);
+  }
+
+  // Axis titles
+  ctx.fillStyle = '#0969da';
+  ctx.font = '600 12px DM Sans, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('Q [m³/h]', pad.left + cw / 2, H - 6);
+  ctx.save();
+  ctx.translate(14, pad.top + ch / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.fillText('H [m]', 0, 0);
+  ctx.restore();
+
+  // Target point
+  if (hasTarget) {
+    ctx.fillStyle = 'rgba(207,84,0,0.12)';
+    ctx.beginPath();
+    ctx.arc(scaleX(targetQ), scaleY(targetH), 20, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = '#cf5400';
+    ctx.beginPath();
+    ctx.arc(scaleX(targetQ), scaleY(targetH), 5, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(207,84,0,0.35)';
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    ctx.moveTo(scaleX(targetQ), pad.top);
+    ctx.lineTo(scaleX(targetQ), pad.top + ch);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(pad.left, scaleY(targetH));
+    ctx.lineTo(pad.left + cw, scaleY(targetH));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    document.getElementById('opLabel').style.display = 'inline-block';
+    document.getElementById('opLabel').textContent = `PF: Q=${targetQ} m³/h, H=${targetH} m`;
+  } else {
+    document.getElementById('opLabel').style.display = 'none';
+  }
+
+  // Draw curves
+  let cmIdx = 0, cmsIdx = 0;
+  pumpsToDraw.forEach((p) => {
+    const color = p.series === 'cm' ? CM_COLORS[cmIdx++ % CM_COLORS.length] : CMS_COLORS[cmsIdx++ % CMS_COLORS.length];
+    const qmax = getPumpQmax(p);
+    const step = qmax / 200;
+
+    ctx.strokeStyle = color;
+    ctx.lineWidth = selectedPumps.has(p.name) ? 2.5 : 1.5;
+    ctx.globalAlpha = selectedPumps.size > 0 && !selectedPumps.has(p.name) ? 0.3 : 1;
+    ctx.beginPath();
+    let started = false;
+    for (let q = 0; q <= qmax; q += step) {
+      const h = evalPoly(p.coeffs, q);
+      if (h < 0) continue;
+      const x = scaleX(q), y = scaleY(h);
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    // Label at Q=0
+    const h0 = evalPoly(p.coeffs, 0);
+    if (h0 > 0) {
+      ctx.fillStyle = color;
+      ctx.font = '10px JetBrains Mono, monospace';
+      ctx.textAlign = 'left';
+      ctx.globalAlpha = selectedPumps.size > 0 && !selectedPumps.has(p.name) ? 0.2 : 0.8;
+      ctx.fillText(p.name.replace('CM ','').replace('CMS ',''), scaleX(0) + 4, scaleY(h0) - 4);
+    }
+
+    // If target, mark intersection
+    if (hasTarget && p.series) {
+      const hAtQ = evalPoly(p.coeffs, targetQ);
+      if (hAtQ > 0 && targetQ <= qmax) {
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(scaleX(targetQ), scaleY(hAtQ), 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  });
+
+  // Empty state
+  if (pumpsToDraw.length === 0) {
+    ctx.fillStyle = '#656d76';
+    ctx.font = '14px DM Sans, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Selectează pompe din lista din stânga sau introdu un punct de funcționare (Q, H)', W/2, H/2 - 10);
+    ctx.font = '12px DM Sans, sans-serif';
+    ctx.fillText('Pompele potrivite vor fi afișate automat', W/2, H/2 + 14);
+  }
+
+  // Store for tooltip
+  canvas._pumps = pumpsToDraw;
+  canvas._scaleX = scaleX;
+  canvas._scaleY = scaleY;
+  canvas._maxQ = maxQ;
+  canvas._maxH = maxH;
+  canvas._pad = pad;
+  canvas._cw = cw;
+  canvas._ch = ch;
+}
+
+// ============ TOOLTIP ============
+const chartCanvas = document.getElementById('chart');
+const tooltipEl = document.getElementById('tooltip');
+
+chartCanvas.addEventListener('mousemove', (e) => {
+  if (!chartCanvas._pumps || chartCanvas._pumps.length === 0) {
+    tooltipEl.style.display = 'none';
+    return;
+  }
+  const rect = chartCanvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const pad = chartCanvas._pad;
+  const cw = chartCanvas._cw;
+  const ch = chartCanvas._ch;
+
+  if (mx < pad.left || mx > pad.left + cw || my < pad.top || my > pad.top + ch) {
+    tooltipEl.style.display = 'none';
+    return;
+  }
+
+  const qHover = ((mx - pad.left) / cw) * chartCanvas._maxQ;
+
+  let lines = [`Q = ${qHover.toFixed(1)} m³/h`];
+  chartCanvas._pumps.forEach(p => {
+    const h = evalPoly(p.coeffs, qHover);
+    const qmax = getPumpQmax(p);
+    if (qHover <= qmax && h > 0) {
+      lines.push(`${p.name}: H = ${h.toFixed(2)} m`);
+    }
+  });
+
+  if (lines.length > 1) {
+    tooltipEl.innerHTML = lines.join('<br>');
+    tooltipEl.style.display = 'block';
+    let tx = mx + 15, ty = my - 10;
+    if (tx + 250 > rect.width) tx = mx - 260;
+    tooltipEl.style.left = tx + 'px';
+    tooltipEl.style.top = ty + 'px';
+  } else {
+    tooltipEl.style.display = 'none';
+  }
+});
+
+chartCanvas.addEventListener('mouseleave', () => {
+  tooltipEl.style.display = 'none';
+});
+
+// ============ INFO CARDS ============
+function renderInfoCards() {
+  const container = document.getElementById('infoCards');
+  const targetQ = parseFloat(document.getElementById('inputQ').value);
+  const targetH = parseFloat(document.getElementById('inputH').value);
+  const hasTarget = !isNaN(targetQ) && !isNaN(targetH) && targetQ > 0 && targetH > 0;
+
+  if (selectedPumps.size === 0 && !hasTarget) {
+    container.innerHTML = '';
+    return;
+  }
+
+  let pumps = selectedPumps.size > 0
+    ? ALL_PUMPS.filter(p => selectedPumps.has(p.name))
+    : getVisiblePumps().filter(p => {
+        if (dismissedPumps.has(p.name)) return false;
+        const h = evalPoly(p.coeffs, targetQ);
+        const qmax = getPumpQmax(p);
+        return h >= targetH * 0.85 && h <= targetH * 1.25 && targetQ <= qmax;
+      });
+
+  const isManualSelection = selectedPumps.size > 0;
+
+  container.innerHTML = pumps.map(p => {
+    const h0 = evalPoly(p.coeffs, 0).toFixed(1);
+    const qmax = getPumpQmax(p);
+    const hAtQmax = evalPoly(p.coeffs, qmax).toFixed(1);
+    const hAtTarget = hasTarget ? evalPoly(p.coeffs, targetQ).toFixed(2) : '—';
+    const seriesTag = p.series === 'cm'
+      ? '<span style="color:var(--cm-color)">CM</span>'
+      : '<span style="color:var(--cms-color)">CMS</span>';
+    const removeFn = isManualSelection ? 'removePump' : 'dismissMatch';
+
+    return `<div class="info-card">
+      <button class="card-remove" onclick="${removeFn}('${p.name.replace(/'/g, "\\'")}')" title="Elimină ${p.name}">✕</button>
+      <div class="card-title">${seriesTag} &bull; ${p.name}</div>
+      ${hasTarget ? `<div class="card-value">${hAtTarget} m <span style="font-size:12px;font-weight:400;color:var(--text-dim)">la Q=${targetQ} m³/h</span></div>` : ''}
+      <div class="card-params">
+        <span>Q<sub>max</sub> = ${qmax.toFixed(1)} m³/h</span><span>H<sub>min</sub> = ${hAtQmax} m</span>
+        <span>Q₀ = 0 m³/h</span><span>H<sub>max</sub> = ${h0} m</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function removePump(name) {
+  selectedPumps.delete(name);
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+}
+
+function dismissMatch(name) {
+  dismissedPumps.add(name);
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+}
+
+// ============ EVENT LISTENERS ============
+document.getElementById('inputQ').addEventListener('input', () => {
+  dismissedPumps.clear();
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+});
+
+document.getElementById('inputH').addEventListener('input', () => {
+  dismissedPumps.clear();
+  renderPumpList();
+  drawChart();
+  renderInfoCards();
+});
+
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  searchFilter = e.target.value;
+  renderPumpList();
+});
+
+window.addEventListener('resize', drawChart);
+
+// ============ INIT ============
+renderPumpList();
+drawChart();
+</script>
+
+</body>
+</html>
